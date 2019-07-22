@@ -1,0 +1,10 @@
+{"original": "This are a great sentences .\n
+Can you seen the sea from where you live .\n
+Let us discuss about all the softwares problems you 've been having recently .\n
+This sentence contains no errors .\n
+",
+ "corrected": "This is a great sentence .\n
+Can you see the sea from where you live ?\n
+Let us discuss all the software problems you 've been having recently .\n
+This sentence contains no errors .\n
+"}
