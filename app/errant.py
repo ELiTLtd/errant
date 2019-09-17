@@ -2,9 +2,9 @@ import os
 import spacy
 from contextlib import ExitStack
 from nltk.stem.lancaster import LancasterStemmer
-import scripts.align_text as align_text
-import scripts.cat_rules as cat_rules
-import scripts.toolbox as toolbox
+import align_text as align_text
+import cat_rules as cat_rules
+import toolbox as toolbox
 from io import StringIO
 
 # Load Tokenizer and other resources
