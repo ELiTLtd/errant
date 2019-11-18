@@ -11,6 +11,10 @@ from errant import Toolbox
 class ParallelToM2:
 
     @staticmethod
+    def convertText(original_text, corrected_text, merge_stategy='rules', levelshtein=False):
+        "TODO: convertText"
+
+    @staticmethod
     def convert(original_file, corrected_files, output_file, merge_strategy='rules', levenshtein=False):
         """
         :param original_file: The path to the original tokenized text file

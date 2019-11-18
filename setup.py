@@ -1,7 +1,7 @@
 from distutils.core import setup
 
 setup(
-    name='errant',
+    name='errant-elit',
     packages=['errant'],
     version='1.0.0',
     license='MIT',
