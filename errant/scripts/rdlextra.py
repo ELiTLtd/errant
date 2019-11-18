@@ -85,31 +85,34 @@
 
 
 import collections
-import doctest
 import pprint
 
 
 # Default cost functions.
 
 def INSERTION(A, A_extra=None, cost=1):
-  return cost
+    return cost
+
 
 def DELETION(A, A_extra=None, cost=1):
-  return cost
+    return cost
+
 
 def SUBSTITUTION(A, B, A_extra=None, B_extra=None, cost=1):
-  return cost
+    return cost
+
 
 def TRANSPOSITION(A, B, A_extra=None, B_extra=None):
-  # Change to cost=float('inf') to have standard edit distance by default
-  # A and B should be the same length
-  cost = len(A) - 1 # or len(B) -1 
-  return cost
+    # Change to cost=float('inf') to have standard edit distance by default
+    # A and B should be the same length
+    cost = len(A) - 1  # or len(B) -1
+    return cost
+
 
 Trace = collections.namedtuple("Trace", ["cost", "ops"])
 
-class WagnerFischer(object):
 
+class WagnerFischer(object):
     """
     An object representing a (set of) Levenshtein alignments between two
     iterable objects (they need not be strings). The cost of the optimal
@@ -169,7 +172,7 @@ class WagnerFischer(object):
     def __init__(self, A, B, A_extra=None, B_extra=None, insertion=INSERTION, deletion=DELETION,
                  substitution=SUBSTITUTION, transposition=TRANSPOSITION):
         # Stores cost functions in a dictionary for programmatic access.
-        self.costs = {"I": insertion, "D": deletion, "S": substitution, "T":transposition}
+        self.costs = {"I": insertion, "D": deletion, "S": substitution, "T": transposition}
         # Keep lowercased versions for transpositions
         Al = [x.lower() for x in A]
         Bl = [x.lower() for x in B]
@@ -187,10 +190,10 @@ class WagnerFischer(object):
         for j in range(1, self.bsz + 1):
             self[0][j] = Trace(self[0][j - 1].cost + self.costs["I"](B[j - 1], B_extra[j - 1] if B_extra else None),
                                {"I"})
-        
+
         ## Fills in rest.
         for i in range(len(A)):
-            for j in range(len(B)):                
+            for j in range(len(B)):
                 # Cleans it up in case there are more than one check for match
                 # first, as it is always the cheapest option.
                 if A[i] == B[j]:
@@ -199,23 +202,27 @@ class WagnerFischer(object):
                 else:
                     costD = self[i][j + 1].cost + self.costs["D"](A[i], A_extra[i] if A_extra else None)
                     costI = self[i + 1][j].cost + self.costs["I"](B[j], B_extra[j] if B_extra else None)
-                    costS = self[i][j].cost + self.costs["S"](A[i], B[j], A_extra[i] if A_extra else None, B_extra[j] if B_extra else None)
-                    costT = float("inf") # We don't know it yet
+                    costS = self[i][j].cost + self.costs["S"](A[i], B[j], A_extra[i] if A_extra else None,
+                                                              B_extra[j] if B_extra else None)
+                    costT = float("inf")  # We don't know it yet
                     min_val = min(costI, costD, costS)
 
                     # Multiword transpositions:
                     # Find a sequence of equal elements in different order
                     # We only need to check diagonally because we require the same number of elements
                     k = 1
-                    #while i > 0 and j > 0 and (i - k) >= 0 and (j - k) >= 0 and any(x in ["D", "I", "S"] for x in self[i-k+1][j-k+1].ops):
-                    while i > 0 and j > 0 and (i - k) >= 0 and (j - k) >= 0 and self[i-k+1][j-k+1].cost - self[i-k][j-k].cost > 0: # An operation that has a cost (i.e. I, D or S > 0)
-                        if collections.Counter(Al[i-k:i+1]) == collections.Counter(Bl[j-k:j+1]):
-                            costT = self[i-k][j-k].cost + self.costs["T"](A[i-k:i+1], B[j-k:j+1], A_extra[i-k:i+1] if A_extra else None, B_extra[j-k:j+1] if B_extra else None)
+                    # while i > 0 and j > 0 and (i - k) >= 0 and (j - k) >= 0 and any(x in ["D", "I", "S"] for x in self[i-k+1][j-k+1].ops):
+                    while i > 0 and j > 0 and (i - k) >= 0 and (j - k) >= 0 and self[i - k + 1][j - k + 1].cost - \
+                            self[i - k][j - k].cost > 0:  # An operation that has a cost (i.e. I, D or S > 0)
+                        if collections.Counter(Al[i - k:i + 1]) == collections.Counter(Bl[j - k:j + 1]):
+                            costT = self[i - k][j - k].cost + self.costs["T"](A[i - k:i + 1], B[j - k:j + 1],
+                                                                              A_extra[i - k:i + 1] if A_extra else None,
+                                                                              B_extra[j - k:j + 1] if B_extra else None)
                             min_val = min(min_val, costT)
                             break
                         k += 1
-                    
-                    trace = Trace(min_val, []) # Use a list to preserve the order
+
+                    trace = Trace(min_val, [])  # Use a list to preserve the order
                     # Adds _all_ operations matching minimum value.
                     if costD == min_val:
                         trace.ops.append("D")
@@ -224,9 +231,9 @@ class WagnerFischer(object):
                     if costS == min_val:
                         trace.ops.append("S")
                     if costT == min_val:
-                        trace.ops.append("T" + str(k+1))
+                        trace.ops.append("T" + str(k + 1))
                     self[i + 1][j + 1] = trace
-                                        
+
         # Stores optimum cost as a property.
         self.cost = self[-1][-1].cost
 
@@ -332,10 +339,9 @@ class WagnerFischer(object):
 
 
 if __name__ == "__main__":
-    #doctest.testmod()
+    # doctest.testmod()
     a = raw_input("A: ").split()
     b = raw_input("B: ").split()
-    al = WagnerFischer(a, b).alignments()   
+    al = WagnerFischer(a, b).alignments()
     for a in al:
         print(a)
-
