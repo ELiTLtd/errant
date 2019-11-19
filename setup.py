@@ -1,8 +1,8 @@
 from setuptools import setup
 
 setup(
-    name='errant-elit',
-    packages=['errant'],
+    name='errant',
+    packages=['errant','errant.scripts'],
     version='1.0.0',
     license='MIT',
     description='ERRor ANnotation Toolkit: Automatically extract and classify grammatical errors in parallel original and corrected sentences.',
