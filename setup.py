@@ -1,4 +1,4 @@
-from distutils.core import setup
+from setuptools import setup
 
 setup(
     name='errant-elit',
@@ -7,6 +7,7 @@ setup(
     license='MIT',
     description='ERRor ANnotation Toolkit: Automatically extract and classify grammatical errors in parallel original and corrected sentences.',
     author='Christopher Bryant, Mariano Felice',
+    author_email='christopher.bryant@cl.cam.ac.uk,mariano.felice@cl.cam.ac.uk',
     python_requires='>=3.4.0',
     url='https://github.com/ELiTLtd/errant',
     keywords=['error annotation toolkit', 'grammatical correction errors', '', 'grammatical errors', '', 'grammatical correction', 'GEC'],
