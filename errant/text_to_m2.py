@@ -1,6 +1,6 @@
 import argparse
 import os
-import spacy
+import en_core_web_sm
 from contextlib import ExitStack
 from nltk.stem.lancaster import LancasterStemmer
 from io import StringIO
@@ -15,7 +15,7 @@ class TextToM2:
     def __init__(self):
         basename = os.path.dirname(os.path.realpath(__file__))
         # Load Tokenizer and other resources
-        self.nlp = spacy.load("en")
+        self.nlp = en_core_web_sm.load()
         # Lancaster Stemmer
         self.stemmer = LancasterStemmer()
         # GB English word list (inc -ise and -ize)
